@@ -1,26 +1,40 @@
+import TaskCard from './components/TaskCard';
+import type { Task } from './types';
+
 function App() {
+
+  const tasks: Task[] = [{
+    id: '1',
+    title: 'This is first task',
+    description: 'Install Vite, React, and Tailwind v4. Fix the PostCSS errors.',
+    status: 'TO_DO'
+  }, {
+    id: '2',
+    title: 'This not the first task, it\'s second',
+    description: 'Install Vite, React, and Tailwind v4. Fix the PostCSS errors.',
+    status: 'IN_PROGRESS'
+  }, {
+    id: '3',
+    title: 'Yet another task, wow, how cool',
+    description: 'Install Vite, React, and Tailwind v4. Fix the PostCSS errors.',
+    status: 'DONE'
+  }
+  ]
+
   return (
-    <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center p-4">
-      <div className="max-w-md w-full bg-slate-900 border border-slate-800 p-8 rounded-2xl shadow-2xl">
-        <h1 className="text-3xl font-bold text-white tracking-tight">
-          Task<span className="text-blue-500">Flow</span>
-        </h1>
-        <p className="text-slate-400 mt-2">
-          TypeScript + React + Tailwind is officially live.
-        </p>
-        
-        <div className="mt-6 flex gap-2">
-          <div className="h-2 flex-1 bg-blue-500 rounded-full"></div>
-          <div className="h-2 flex-1 bg-slate-800 rounded-full"></div>
-          <div className="h-2 flex-1 bg-slate-800 rounded-full"></div>
+    <div className="min-h-screen bg-slate-950 p-8">
+      <div className="max-w-6xl mx-auto">
+        <h1 className="text-4xl font-bold text-white mb-8">TaskFlow</h1>
+
+        {/* We are "passing props" here. 'task' is the prop name */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {tasks.map((t) => (
+            <TaskCard key={t.id} task={t} />
+          ))}
         </div>
-        
-        <button className="mt-8 w-full bg-blue-600 hover:bg-blue-500 text-white font-semibold py-3 rounded-xl transition-all">
-          Let's Build the Board
-        </button>
       </div>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
