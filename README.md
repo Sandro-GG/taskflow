@@ -1,19 +1,26 @@
-# TaskFlow
-
-A modern Kanban-style task management application built to demonstrate proficiency in **React**, **TypeScript**, and **Tailwind CSS**.
-
 ## Features
-- **TypeScript First**: Strict type definitions for project data structures.
-- **Component-Based Architecture**: Modular UI using functional components.
-- **Modern Styling**: Styled with Tailwind CSS v4 for a sleek, responsive dark mode.
+
+* **TypeScript First**: Strict type definitions for project data structures and event handling to ensure code reliability.
+* **Drag and Drop**: Interactive task movement between columns powered by `@hello-pangea/dnd`.
+* **Component-Based Architecture**: Modular UI using functional components and clean prop-drilling patterns.
+* **Modern Styling**: Styled with Tailwind CSS v4 for a sleek, responsive dark mode interface.
 
 ## Tech Stack
-- **Framework**: React 19
-- **Language**: TypeScript
-- **Build Tool**: Vite
-- **Styling**: Tailwind CSS v4
+
+* **Framework**: React 19
+* **Language**: TypeScript
+* **Build Tool**: Vite
+* **Styling**: Tailwind CSS v4
+* **State Management**: React Hooks (useState)
 
 ## Setup
-1. Clone the repo: `git clone [your-repo-link]`
-2. Install dependencies: `npm install`
-3. Run development server: `npm run dev`
+
+1. **Clone the repo:**
+   ```bash
+   git clone [https://github.com/Sandro-GG/taskflow]
+2. **Install dependencies:**
+   ```bash
+   `npm install`
+3. **Run development server:** 
+   ```bash
+   `npm run dev`
