@@ -1,3 +1,7 @@
+# TaskFlow
+
+A modern Kanban-style task management application built to demonstrate proficiency in **React 19**, **TypeScript**, and **Tailwind CSS v4**. This project showcases complex state management, drag-and-drop interactions, and modular component architecture.
+
 ## Features
 
 * **TypeScript First**: Strict type definitions for project data structures and event handling to ensure code reliability.
