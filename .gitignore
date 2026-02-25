@@ -22,3 +22,11 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Environment variables
+.env
+*.local
+
+# Prisma
+/prisma/migrations
+/src/generated/prisma
