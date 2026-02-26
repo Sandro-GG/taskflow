@@ -28,5 +28,8 @@ dist-ssr
 *.local
 
 # Prisma
-/prisma/migrations
-/src/generated/prisma
+# This catches migrations in the server/prisma folder
+**/prisma/migrations
+
+# This catches the generated client specifically in your server path
+server/src/generated/
