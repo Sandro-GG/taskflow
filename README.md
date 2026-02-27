@@ -1,27 +1,33 @@
 # TaskFlow
 
-A modern Kanban-style task management application built to demonstrate proficiency in **React 19**, **TypeScript**, and **Tailwind CSS v4**. This project showcases complex state management, drag-and-drop interactions, and modular component architecture.
+A modern, full-stack Kanban-style task management application built to demonstrate proficiency in **React 19**, **Node.js**, **Prisma**, and **PostgreSQL**. This project showcases optimistic UI patterns, real-time database synchronization, and modular full-stack architecture.
 
 ## Features
 
-* **TypeScript First**: Strict type definitions for project data structures and event handling to ensure code reliability.
-* **Drag and Drop**: Interactive task movement between columns powered by `@hello-pangea/dnd`.
-* **Component-Based Architecture**: Modular UI using functional components and clean prop-drilling patterns.
-* **Modern Styling**: Styled with Tailwind CSS v4 for a sleek, responsive dark mode interface.
+* **Full-Stack Persistence**: Real-time CRUD operations synced with a PostgreSQL database via a RESTful Express API.
+* **Optimistic UI & Rollbacks**: Instant drag-and-drop feedback with automatic state rollbacks if server synchronization fails.
+* **TypeScript First**: End-to-end type safety from the database schema to the React components.
+* **Modern Styling**: Sleek, responsive dark mode interface built with Tailwind CSS v4.
 
 ## Tech Stack
 
-* **Framework**: React 19
-* **Language**: TypeScript
-* **Build Tool**: Vite
+* **Frontend**: React 19, TypeScript, Vite, @hello-pangea/dnd
+* **Backend**: Node.js, Express, Prisma ORM
+* **Database**: PostgreSQL
 * **Styling**: Tailwind CSS v4
-* **State Management**: React Hooks (useState)
 
 ## Setup
 
 1. **Clone the repo:**
    `git clone https://github.com/Sandro-GG/taskflow`
-2. **Install dependencies:**
-   `npm install`
-3. **Run development server:** 
-   `npm run dev`
+
+2. **Backend Setup:**
+   * Navigate to `/server`
+   * Run `npm install`
+   * Configure your `.env` with `DATABASE_URL`
+   * Run `npx prisma generate`
+
+3. **Frontend Setup:**
+   * Navigate to root
+   * Run `npm install`
+   * Run `npm run dev`
