@@ -4,8 +4,6 @@ dotenv.config();
 import express from 'express';
 import cors from 'cors';
 import { client } from './db.js';
-import prismaConfig from '../prisma.config.js';
-
 
 const app = express();
 app.use(cors());
