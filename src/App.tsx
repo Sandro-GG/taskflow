@@ -5,11 +5,13 @@ import { useEffect, useState } from 'react';
 import TaskModal from './components/TaskModal';
 import { DragDropContext, type DropResult } from '@hello-pangea/dnd';
 
+const API_URL = import.meta.env.VITE_API_URL as string;
+
 function App() {
   const [tasks, setTasks] = useState<Task[]>([]);
   useEffect(() => {
     const loadTasks = async () => {
-      const response = await fetch('http://localhost:5050/tasks');
+      const response = await fetch(`${API_URL}/tasks`);
       const data = await response.json();
       setTasks(data);
     }
@@ -20,7 +22,7 @@ function App() {
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   async function deleteTask(id: string) {
-    const response = await fetch(`http://localhost:5050/tasks/${id}`, {
+    const response = await fetch(`${API_URL}/tasks/${id}`, {
       method: 'DELETE',
     })
     setTasks(tasks.filter(t => t.id !== id))
@@ -41,7 +43,7 @@ function App() {
     const originalTasks = tasks;
     setTasks(updatedTasks);
 
-    fetch(`http://localhost:5050/tasks/${result.draggableId}`, {
+    fetch(`${API_URL}/tasks/${result.draggableId}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ status: newStatus })
@@ -55,7 +57,7 @@ function App() {
   }
 
   async function handleAddTask(title: string, description: string) {
-    const response = await fetch('http://localhost:5050/tasks', {
+    const response = await fetch(`${API_URL}/tasks`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ title, description })
