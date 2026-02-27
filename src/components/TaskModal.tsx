@@ -1,10 +1,11 @@
 import type { Task } from "../types";
 import { useState } from 'react';
 
+
 interface Props {
     isOpen: boolean;
     onClose: () => void;
-    onAdd: (task: Task) => void
+    onAdd: (title: string, description: string) => void;
 }
 
 export default function TaskModal({ isOpen, onClose, onAdd }: Props) {
@@ -15,13 +16,8 @@ export default function TaskModal({ isOpen, onClose, onAdd }: Props) {
 
     function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
-        const newTask: Task = {
-            id: Date.now().toString(),
-            title: title,
-            description: description,
-            status: 'TO_DO'
-        }
-        onAdd(newTask);
+        
+        onAdd(title, description);
         setTitle('');
         setDescription('');
         onClose()

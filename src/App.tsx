@@ -1,20 +1,28 @@
 import TaskCard from './components/TaskCard';
 import type { Task } from './types';
 import Column from './components/Column';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import TaskModal from './components/TaskModal';
 import { DragDropContext, type DropResult } from '@hello-pangea/dnd';
 
 function App() {
-  const [tasks, setTasks] = useState<Task[]>([
-    { id: '1', title: 'Setup Lab', description: 'Done with Phase 1', status: 'DONE' },
-    { id: '2', title: 'Build Columns', description: 'Currently working on this', status: 'IN_PROGRESS' },
-    { id: '3', title: 'Drag and Drop', description: 'Coming soon', status: 'TO_DO' },
-  ]);
+  const [tasks, setTasks] = useState<Task[]>([]);
+  useEffect(() => {
+    const loadTasks = async () => {
+      const response = await fetch('http://localhost:5050/tasks');
+      const data = await response.json();
+      setTasks(data);
+    }
+
+    loadTasks()
+  }, []);
 
   const [isModalOpen, setIsModalOpen] = useState(false)
 
-  function deleteTask(id: string) {
+  async function deleteTask(id: string) {
+    const response = await fetch(`http://localhost:5050/tasks/${id}`, {
+      method: 'DELETE',
+    })
     setTasks(tasks.filter(t => t.id !== id))
   }
 
@@ -24,12 +32,37 @@ function App() {
       result.destination.index === result.source.index) return;
     const newStatus = result.destination.droppableId.replace(' ', '_').toUpperCase();
     const updatedTasks = tasks.map(t => {
-        if (t.id === result.draggableId) {
-          return {...t, status: newStatus as Task['status']}
-        }
-        return t;
+      if (t.id === result.draggableId) {
+        return { ...t, status: newStatus as Task['status'] }
+      }
+      return t;
     });
+
+    const originalTasks = tasks;
     setTasks(updatedTasks);
+
+    fetch(`http://localhost:5050/tasks/${result.draggableId}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status: newStatus })
+    }).then(response => {
+      if (!response.ok) throw new Error();
+    }).catch(() => {
+      setTasks(originalTasks);
+      alert("Server sync failed. Task moved back.");
+    })
+
+  }
+
+  async function handleAddTask(title: string, description: string) {
+    const response = await fetch('http://localhost:5050/tasks', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ title, description })
+    });
+
+    const data = await response.json();
+    setTasks([...tasks, data]);
   }
 
 
@@ -69,7 +102,7 @@ function App() {
       <TaskModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        onAdd={(newTask) => setTasks([...tasks, newTask])}
+        onAdd={handleAddTask}
       />
     </div>
   );
