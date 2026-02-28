@@ -8,6 +8,7 @@ A modern, full-stack Kanban-style task management application built to demonstra
 * **Optimistic UI & Rollbacks**: Instant drag-and-drop feedback with automatic state rollbacks if server synchronization fails.
 * **TypeScript First**: End-to-end type safety from the database schema to the React components.
 * **Modern Styling**: Sleek, responsive dark mode interface built with Tailwind CSS v4.
+* **Dynamic Search & Filtering**: Real-time task filtering by title or description using optimized derived state patterns.
 
 ## Tech Stack
 
@@ -31,3 +32,8 @@ A modern, full-stack Kanban-style task management application built to demonstra
    * Navigate to root
    * Run `npm install`
    * Run `npm run dev`
+
+4. **Environment Configuration**:
+   * Create a `.env` file in the root directory.
+   * Add `VITE_API_URL=http://localhost:5050`.
+   * (The app will use this to communicate with the backend).   
