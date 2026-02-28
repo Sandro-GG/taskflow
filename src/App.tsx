@@ -9,6 +9,8 @@ const API_URL = import.meta.env.VITE_API_URL as string;
 
 function App() {
   const [tasks, setTasks] = useState<Task[]>([]);
+  const [searchQuery, setSearchQuery] = useState('');
+
   useEffect(() => {
     const loadTasks = async () => {
       const response = await fetch(`${API_URL}/tasks`);
@@ -67,6 +69,12 @@ function App() {
     setTasks([...tasks, data]);
   }
 
+  const query = searchQuery.toLowerCase();
+
+  const filteredTasks = tasks.filter((t) =>
+    t.title.toLowerCase().includes(query) ||
+    t.description.toLowerCase().includes(query)
+  );
 
   return (
     <div className="min-h-screen bg-slate-950 p-8 text-white">
@@ -74,6 +82,11 @@ function App() {
         <div className="max-w-7xl mx-auto">
           <header className="flex justify-between items-center mb-8">
             <h1 className="text-4xl font-bold">TaskFlow</h1>
+            <input className="bg-slate-900 border border-slate-800 px-4 py-2 rounded-lg focus:outline-none 
+            focus:ring-2 focus:ring-blue-600" placeholder="Search tasks..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
             <button
               onClick={() => setIsModalOpen(true)}
               className="bg-blue-600 hover:bg-blue-500 px-4 py-2 rounded-lg font-medium transition-colors"
@@ -85,17 +98,17 @@ function App() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <Column
               title="To Do"
-              tasks={tasks.filter(t => t.status === 'TO_DO')}
+              tasks={filteredTasks.filter(t => t.status === 'TO_DO')}
               onDelete={deleteTask}
             />
             <Column
               title="In Progress"
-              tasks={tasks.filter(t => t.status === 'IN_PROGRESS')}
+              tasks={filteredTasks.filter(t => t.status === 'IN_PROGRESS')}
               onDelete={deleteTask}
             />
             <Column
               title="Done"
-              tasks={tasks.filter(t => t.status === 'DONE')}
+              tasks={filteredTasks.filter(t => t.status === 'DONE')}
               onDelete={deleteTask}
             />
           </div>
