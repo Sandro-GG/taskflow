@@ -27,6 +27,7 @@ A modern, full-stack Kanban-style task management application built to demonstra
    * Run `npm install`
    * Configure your `.env` with `DATABASE_URL`
    * Run `npx prisma generate`
+   * Run `npm run dev`
 
 3. **Frontend Setup:**
    * Navigate to root
