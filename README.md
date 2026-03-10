@@ -15,7 +15,7 @@ A modern, full-stack Kanban-style task management application built to demonstra
 * **Frontend**: React 19, TypeScript, Vite, @hello-pangea/dnd
 * **Backend**: Node.js, Express, Prisma ORM
 * **Database**: PostgreSQL
-* **Styling**: Tailwind CSS v
+* **Styling**: Tailwind CSS v4
 
 ## Setup
 
