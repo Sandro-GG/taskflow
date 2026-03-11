@@ -12,7 +12,7 @@ A modern, full-stack Kanban-style task management application built to demonstra
 
 ## Tech Stack
 
-* **Frontend**: React 19, Typecript, Vite, @hello-pangea/dnd
+* **Frontend**: React 19, TypeScript, Vite, @hello-pangea/dnd
 * **Backend**: Node.js, Express, Prisma ORM
 * **Database**: PostgreSQL
 * **Styling**: Tailwind CSS v4
