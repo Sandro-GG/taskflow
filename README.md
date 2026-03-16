@@ -19,7 +19,7 @@ A modern, full-stack Kanban-style task management application built to demonstra
 
 ## Setup
 
-1. **Clone the repo:**
+1. **Clne the repo:**
    `git clone https://github.com/Sandro-GG/taskflow`
 
 2. **Backend Setup:**
