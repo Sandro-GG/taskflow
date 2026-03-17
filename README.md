@@ -37,4 +37,4 @@ A modern, full-stack Kanban-style task management application built to demonstra
 4. **Environment Configuration**:
    * Create a `.env` file in the root directory.
    * Add `VITE_API_URL=http://localhost:5050`.
-   * (The app will use this to communicate with the backend).
+   * (The app will use this to communicate with the backend)
