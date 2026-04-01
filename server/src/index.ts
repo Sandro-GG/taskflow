@@ -4,6 +4,7 @@ dotenv.config();
 import express from 'express';
 import cors from 'cors';
 import { client } from './db.js';
+import Anthropic from '@anthropic-ai/sdk';
 
 const app = express();
 app.use(cors());
@@ -27,6 +28,29 @@ app.post('/tasks', async (req, res) => {
         res.status(500).json({ error: "Failed to create task" });
     }
 });
+
+app.post('/tasks/suggest', async (req, res) => {
+    try {
+        const { title, description } = req.body;
+        const client = new Anthropic();
+        const response = await client.messages.create({
+            model: "claude-haiku-4-5-20251001",
+            max_tokens: 1024,
+            messages: [
+                {
+                    role: "user",
+                    content: `Return ONLY a JSON array of 3 short strings representing sub-tasks for: ${title}. Description: ${description}`
+                }
+            ]
+        });
+        const rawText = response.content[0]?.type === 'text' ? response.content[0].text : "";
+        const suggestions = JSON.parse(rawText);
+        res.json({ suggestions });
+    } catch (error) {
+        console.error("AI Suggestion Error:", error);
+        res.status(500).json({ error: "Failed to fetch suggestions" });
+    }
+})
 
 
 app.delete('/tasks/:id', async (req, res) => {
