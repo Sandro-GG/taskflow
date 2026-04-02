@@ -29,6 +29,7 @@ app.post('/tasks', async (req, res) => {
     }
 });
 
+
 app.post('/tasks/suggest', async (req, res) => {
     try {
         const { title, description } = req.body;
@@ -75,10 +76,10 @@ app.delete('/tasks/:id', async (req, res) => {
 app.patch('/tasks/:id', async (req, res) => {
     try {
         const { id } = req.params;
-        const newStatus = req.body['status']
+        const { title, description, status } = req.body;
         const updatedTask = await client.task.update({
             where: { id },
-            data: { status: newStatus }
+            data: { title, description, status }
         })
         res.json(updatedTask);
     } catch (error: any) {

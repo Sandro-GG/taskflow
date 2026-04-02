@@ -6,9 +6,10 @@ interface Props {
     title: string;
     tasks: Task[];
     onDelete: (id: string) => void
+    onEdit: (task: Task) => void
 }
 
-export default function Column({ title, tasks, onDelete }: Props) {
+export default function Column({ title, tasks, onDelete, onEdit }: Props) {
     return (
         <div className="flex flex-col gap-4 bg-slate-900/50 p-4 rounded-xl border border-slate-800">
             <h2 className="text-slate-200 font-bold uppercase text-sm tracking-widest">{title}</h2>
@@ -20,7 +21,7 @@ export default function Column({ title, tasks, onDelete }: Props) {
                         ref={provided.innerRef}
                     >
                         {tasks.map((t, index) => (
-                            <TaskCard key={t.id} task={t} onDelete={onDelete} index={index} />
+                            <TaskCard key={t.id} task={t} onDelete={onDelete} index={index} onEdit={onEdit} />
                         ))}
                         {provided.placeholder}
                     </div>

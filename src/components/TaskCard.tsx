@@ -5,14 +5,16 @@ interface Props {
   task: Task;
   onDelete: (id: string) => void;
   index: number
+  onEdit: (task: Task) => void;
 }
 
-export default function TaskCard({ task, onDelete, index }: Props) {
+export default function TaskCard({ task, onDelete, index, onEdit }: Props) {
   return (
     <Draggable draggableId={task.id} index={index}>
       {(provided) => (
         <div
           ref={provided.innerRef}
+          onClick={() => onEdit}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
           className="bg-slate-800 p-4 rounded-lg border border-slate-700 hover:border-blue-500 transition-colors cursor-pointer group relative"

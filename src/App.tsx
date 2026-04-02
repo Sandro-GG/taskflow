@@ -10,6 +10,7 @@ const API_URL = import.meta.env.VITE_API_URL as string;
 function App() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
+  const [editingTask, setEditingTask] = useState<Task | null>(null);
 
   useEffect(() => {
     const loadTasks = async () => {
@@ -69,6 +70,11 @@ function App() {
     setTasks([...tasks, data]);
   }
 
+  function handleEditClick(task: Task) {
+    setEditingTask(task);
+    setIsModalOpen(true);
+  }
+
   const query = searchQuery.toLowerCase();
 
   const filteredTasks = tasks.filter((t) =>
@@ -100,16 +106,19 @@ function App() {
               title="To Do"
               tasks={filteredTasks.filter(t => t.status === 'TO_DO')}
               onDelete={deleteTask}
+              onEdit={handleEditClick}
             />
             <Column
               title="In Progress"
               tasks={filteredTasks.filter(t => t.status === 'IN_PROGRESS')}
               onDelete={deleteTask}
+              onEdit={handleEditClick}
             />
             <Column
               title="Done"
               tasks={filteredTasks.filter(t => t.status === 'DONE')}
               onDelete={deleteTask}
+              onEdit={handleEditClick}
             />
           </div>
         </div>
