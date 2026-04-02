@@ -24,6 +24,20 @@ function App() {
 
   const [isModalOpen, setIsModalOpen] = useState(false)
 
+  async function handleUpdateTask(id: string, title: string, description: string) {
+    try {
+      const response = await fetch(`${API_URL}/tasks/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title, description })
+      });
+      const data = await response.json();
+      setTasks(tasks.map(t => t.id === data.id ? data : t));
+    } catch (error) {
+      console.error("Failed to edit task:", error);
+    }
+  }
+
   async function deleteTask(id: string) {
     const response = await fetch(`${API_URL}/tasks/${id}`, {
       method: 'DELETE',
@@ -125,8 +139,13 @@ function App() {
       </DragDropContext>
       <TaskModal
         isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        onClose={() => {
+          setIsModalOpen(false);
+          setEditingTask(null);
+        }}
         onAdd={handleAddTask}
+        editingTask={editingTask}
+        onUpdate={handleUpdateTask}
       />
     </div>
   );

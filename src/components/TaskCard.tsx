@@ -14,7 +14,7 @@ export default function TaskCard({ task, onDelete, index, onEdit }: Props) {
       {(provided) => (
         <div
           ref={provided.innerRef}
-          onClick={() => onEdit}
+          onClick={() => onEdit(task)}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
           className="bg-slate-800 p-4 rounded-lg border border-slate-700 hover:border-blue-500 transition-colors cursor-pointer group relative"

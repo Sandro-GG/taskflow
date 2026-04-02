@@ -1,14 +1,16 @@
 import type { Task } from "../types";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 const API_URL = import.meta.env.VITE_API_URL as string;
 
 interface Props {
     isOpen: boolean;
     onClose: () => void;
     onAdd: (title: string, description: string) => void;
+    editingTask: Task | null;
+    onUpdate: (id: string, title: string, description: string) => void;
 }
 
-export default function TaskModal({ isOpen, onClose, onAdd }: Props) {
+export default function TaskModal({ isOpen, onClose, onAdd, editingTask, onUpdate }: Props) {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [suggestions, setSuggestions] = useState<string[]>([]);
@@ -16,10 +18,22 @@ export default function TaskModal({ isOpen, onClose, onAdd }: Props) {
 
     if (!isOpen) return null;
 
+    useEffect(() => {
+        if (editingTask) {
+            setTitle(editingTask.title);
+            setDescription(editingTask.description);
+        } else {
+            setTitle('');
+            setDescription('');
+        }
+
+    }, [editingTask, isOpen])
+
     function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
 
-        onAdd(title, description);
+        editingTask ? onUpdate(editingTask.id, title, description) : onAdd(title, description);
+
         setTitle('');
         setDescription('');
         setSuggestions([]);
@@ -61,7 +75,7 @@ export default function TaskModal({ isOpen, onClose, onAdd }: Props) {
                 onClick={(e) => e.stopPropagation()}
             >
                 <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-                    <h2 className="text-xl font-bold text-white">New Task</h2>
+                    <h2 className="text-xl font-bold text-white">{editingTask ? "Edit Task" : "New Task"}</h2>
                     <input
                         className="bg-slate-800 p-2 rounded text-white"
                         placeholder="Task title"
@@ -102,7 +116,7 @@ export default function TaskModal({ isOpen, onClose, onAdd }: Props) {
 
                     <div className="flex justify-end gap-2">
                         <button type="button" onClick={handleClose} className="text-slate-400">Cancel</button>
-                        <button type="submit" className="bg-blue-600 px-4 py-2 rounded">Create</button>
+                        <button type="submit" className="bg-blue-600 px-4 py-2 rounded">{editingTask ? "Save Changes" : "Create"}</button>
                     </div>
                 </form>
             </div>
