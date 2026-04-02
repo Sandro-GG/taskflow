@@ -9,7 +9,6 @@ interface Props {
 
 export default function TaskCard({ task, onDelete, index }: Props) {
   return (
-
     <Draggable draggableId={task.id} index={index}>
       {(provided) => (
         <div
@@ -30,7 +29,7 @@ export default function TaskCard({ task, onDelete, index }: Props) {
               ✕
             </button>
           </div>
-          <p className="text-slate-400 text-sm mt-1">{task.description}</p>
+          <p className="text-slate-400 text-sm mt-1 whitespace-pre-line">{task.description}</p>
           <div className="mt-3">
             <span className="text-xs font-bold uppercase tracking-wider px-2 py-1 rounded bg-slate-700 text-slate-300">
               {task.status.replace('_', ' ')}

@@ -39,7 +39,10 @@ app.post('/tasks/suggest', async (req, res) => {
             messages: [
                 {
                     role: "user",
-                    content: `Return ONLY a JSON array of 3 short strings representing sub-tasks for: ${title}. Description: ${description}`
+                    content: `
+                        Return ONLY a raw JSON array of 3 short strings representing sub-tasks for: ${title}. Description: ${description}. 
+                        Do NOT include markdown code blocks, backticks, or any explanatory text. Example format: ["task 1", "task 2", "task 3"]
+                    `.trim()
                 }
             ]
         });
