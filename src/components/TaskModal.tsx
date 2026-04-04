@@ -16,8 +16,6 @@ export default function TaskModal({ isOpen, onClose, onAdd, editingTask, onUpdat
     const [suggestions, setSuggestions] = useState<string[]>([]);
     const [isLoadingSuggestions, setIsLoadingSuggestions] = useState<boolean>(false);
 
-    if (!isOpen) return null;
-
     useEffect(() => {
         if (editingTask) {
             setTitle(editingTask.title);
@@ -27,7 +25,9 @@ export default function TaskModal({ isOpen, onClose, onAdd, editingTask, onUpdat
             setDescription('');
         }
 
-    }, [editingTask, isOpen])
+    }, [editingTask, isOpen]);
+    
+    if (!isOpen) return null;
 
     function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
