@@ -3,7 +3,7 @@ import type { Task } from './types';
 import Column from './components/Column';
 import { useEffect, useState } from 'react';
 import TaskModal from './components/TaskModal';
-import { DragDropContext, type DropResult } from '@hello-pangea/dnd';
+import { DragDropContext, Droppable, type DropResult } from '@hello-pangea/dnd';
 
 const API_URL = import.meta.env.VITE_API_URL as string;
 
@@ -49,16 +49,23 @@ function App() {
     if (!result.destination) return;
     if (result.destination.droppableId === result.source.droppableId &&
       result.destination.index === result.source.index) return;
-    const newStatus = result.destination.droppableId.replace(' ', '_').toUpperCase();
-    const updatedTasks = tasks.map(t => {
-      if (t.id === result.draggableId) {
-        return { ...t, status: newStatus as Task['status'] }
-      }
-      return t;
-    });
+
+    const newStatus = result.destination.droppableId as Task['status'];
+    const taskToMove = { ...tasks.find(t => t.id === result.draggableId)!, status: newStatus };
+    const copyTasks = [...tasks];
+    copyTasks.splice(copyTasks.findIndex(t => t.id === taskToMove.id), 1);
+    const columnTasks = copyTasks.filter(t => t.status === taskToMove.status);
+    const neighbor = columnTasks[result.destination.index];
+
+    if (neighbor) {
+      const finalIndex = copyTasks.indexOf(neighbor);
+      copyTasks.splice(finalIndex, 0, taskToMove);
+    } else {
+      copyTasks.push(taskToMove);
+    }
 
     const originalTasks = tasks;
-    setTasks(updatedTasks);
+    setTasks(copyTasks);
 
     fetch(`${API_URL}/tasks/${result.draggableId}`, {
       method: 'PATCH',
@@ -118,18 +125,21 @@ function App() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <Column
               title="To Do"
+              status="TO_DO"
               tasks={filteredTasks.filter(t => t.status === 'TO_DO')}
               onDelete={deleteTask}
               onEdit={handleEditClick}
             />
             <Column
               title="In Progress"
+              status="IN_PROGRESS"
               tasks={filteredTasks.filter(t => t.status === 'IN_PROGRESS')}
               onDelete={deleteTask}
               onEdit={handleEditClick}
             />
             <Column
               title="Done"
+              status="DONE"
               tasks={filteredTasks.filter(t => t.status === 'DONE')}
               onDelete={deleteTask}
               onEdit={handleEditClick}
