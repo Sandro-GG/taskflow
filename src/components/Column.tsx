@@ -17,12 +17,12 @@ export default function Column({ title, status, tasks, onDelete, onEdit }: Props
             <Droppable droppableId={status}>
                 {(provided) => (
                     <div 
-                        className="flex flex-col gap-3 min-h-[100px]"
+                        className="flex flex-col min-h-[100px]"
                         {...provided.droppableProps}
                         ref={provided.innerRef}
                     >
                         {tasks.map((t, index) => (
-                            <TaskCard key={t.id} task={t} onDelete={onDelete} index={index} onEdit={onEdit} />
+                            <TaskCard className="mb-3" key={t.id} task={t} onDelete={onDelete} index={index} onEdit={onEdit} />
                         ))}
                         {provided.placeholder}
                     </div>

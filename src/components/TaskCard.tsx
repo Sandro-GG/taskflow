@@ -6,18 +6,19 @@ interface Props {
   onDelete: (id: string) => void;
   index: number
   onEdit: (task: Task) => void;
+  className?: string;
 }
 
-export default function TaskCard({ task, onDelete, index, onEdit }: Props) {
+export default function TaskCard({ task, onDelete, index, onEdit, className }: Props) {
   return (
     <Draggable draggableId={task.id} index={index}>
       {(provided) => (
         <div
           ref={provided.innerRef}
-          onClick={() => onEdit(task)}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
-          className="bg-slate-800 p-4 rounded-lg border border-slate-700 hover:border-blue-500 transition-colors cursor-pointer group relative"
+          className={`bg-slate-800 p-4 rounded-lg border border-slate-700 hover:border-blue-500 transition-colors cursor-pointer group relative ${className || ''}`}
+          onClick={() => onEdit(task)}
         >
           <div className="flex justify-between items-start">
             <h3 className="text-white font-semibold">{task.title}</h3>
