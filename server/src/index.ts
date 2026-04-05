@@ -12,13 +12,18 @@ app.use(express.json());
 
 
 app.get('/tasks', async (req, res) => {
-    res.json(await client.task.findMany());
+    res.json(await client.task.findMany({ orderBy: { createdAt: 'asc' } }));
 });
 
 
 app.post('/tasks', async (req, res) => {
     try {
         const { title, description } = req.body;
+        if (!title || !description) {
+            res.status(400).json({ error: "Title and description are required" });
+            return
+        }
+        
         const newTask = await client.task.create({
             data: { title, description }
         });
@@ -33,8 +38,8 @@ app.post('/tasks', async (req, res) => {
 app.post('/tasks/suggest', async (req, res) => {
     try {
         const { title, description } = req.body;
-        const client = new Anthropic();
-        const response = await client.messages.create({
+        const anthropic = new Anthropic();
+        const response = await anthropic.messages.create({
             model: "claude-haiku-4-5-20251001",
             max_tokens: 1024,
             messages: [
@@ -48,7 +53,8 @@ app.post('/tasks/suggest', async (req, res) => {
             ]
         });
         const rawText = response.content[0]?.type === 'text' ? response.content[0].text : "";
-        const suggestions = JSON.parse(rawText);
+        const match = rawText.match(/\[.*\]/s);
+        const suggestions = JSON.parse(match ? match[0] : rawText);
         res.json({ suggestions });
     } catch (error) {
         console.error("AI Suggestion Error:", error);
@@ -77,6 +83,17 @@ app.patch('/tasks/:id', async (req, res) => {
     try {
         const { id } = req.params;
         const { title, description, status } = req.body;
+        
+        if (!title && !description && !status) {
+            res.status(400).json({ error: "No update data provided" });
+            return;
+        }
+
+        if (title !== undefined && title.trim() === "") {
+            res.status(400).json({ error: "Title cannot be empty" });
+            return;
+        }
+
         const updatedTask = await client.task.update({
             where: { id },
             data: { title, description, status }
