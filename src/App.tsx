@@ -117,7 +117,7 @@ function App() {
               TaskFlow
             </h1>
 
-            <div className="flex w-full flex-col gap-3 md:w-auto md:flex-row">
+            <div className="flex w-full flex-col gap-3 md:w-auto md:flex-row md:items-center">
               <div className="relative">
                 <input
                   className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-slate-400 outline-none backdrop-blur-xl transition focus:border-blue-400/40 focus:ring-4 focus:ring-blue-500/10 md:w-[360px]"

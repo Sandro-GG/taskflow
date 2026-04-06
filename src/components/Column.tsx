@@ -66,7 +66,7 @@ export default function Column({ title, status, tasks, onDelete, onEdit }: Props
             <Droppable droppableId={status}>
                 {(provided) => (
                     <div
-                        className="min-h-[520px] rounded-2xl border border-white/6 bg-[#0c1220] p-3"
+                        className="min-h-[120px] rounded-2xl border border-white/6 bg-[#0c1220] p-3"
                         {...provided.droppableProps}
                         ref={provided.innerRef}
                     >
