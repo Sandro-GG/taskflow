@@ -109,7 +109,8 @@ app.patch('/tasks/:id', async (req, res) => {
     }
 })
 
+if (process.env.NODE_ENV !== 'test') {
+  app.listen(5050, () => console.log("Server is running on port 5050"));
+}
 
-app.listen(5050, () => {
-    console.log("Server is running on port 5050");
-})
+export { app }

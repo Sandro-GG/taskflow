@@ -10,7 +10,7 @@
     "moduleResolution": "Bundler",
     "module": "ESNext",
     "target": "ES2020",
-    "types": [],
+    "types": ["node", "jest"],
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     // For nodejs:
