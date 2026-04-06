@@ -10,18 +10,17 @@ function App() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [editingTask, setEditingTask] = useState<Task | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     const loadTasks = async () => {
       const response = await fetch(`${API_URL}/tasks`);
       const data = await response.json();
       setTasks(data);
-    }
+    };
 
-    loadTasks()
+    loadTasks();
   }, []);
-
-  const [isModalOpen, setIsModalOpen] = useState(false)
 
   async function handleUpdateTask(id: string, title: string, description: string) {
     try {
@@ -31,9 +30,9 @@ function App() {
         body: JSON.stringify({ title, description })
       });
       const data = await response.json();
-      setTasks(tasks.map(t => t.id === data.id ? data : t));
+      setTasks(tasks.map(t => (t.id === data.id ? data : t)));
     } catch (error) {
-      console.error("Failed to edit task:", error);
+      console.error('Failed to edit task:', error);
     }
   }
 
@@ -41,7 +40,7 @@ function App() {
     await fetch(`${API_URL}/tasks/${id}`, {
       method: 'DELETE',
     })
-    setTasks(tasks.filter(t => t.id !== id))
+    setTasks(tasks.filter(t => t.id !== id));
   }
 
   const onDragEnd = (result: DropResult) => {
@@ -52,7 +51,12 @@ function App() {
     const newStatus = result.destination.droppableId as Task['status'];
     const taskToMove = { ...tasks.find(t => t.id === result.draggableId)!, status: newStatus };
     const copyTasks = [...tasks];
-    copyTasks.splice(copyTasks.findIndex(t => t.id === taskToMove.id), 1);
+
+    copyTasks.splice(
+      copyTasks.findIndex(t => t.id === taskToMove.id),
+      1
+    );
+
     const columnTasks = copyTasks.filter(t => t.status === taskToMove.status);
     const neighbor = columnTasks[result.destination.index];
 
@@ -69,21 +73,22 @@ function App() {
     fetch(`${API_URL}/tasks/${result.draggableId}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ status: newStatus })
-    }).then(response => {
-      if (!response.ok) throw new Error();
-    }).catch(() => {
-      setTasks(originalTasks);
-      alert("Server sync failed. Task moved back.");
+      body: JSON.stringify({ status: newStatus }),
     })
-
-  }
+      .then((response) => {
+        if (!response.ok) throw new Error();
+      })
+      .catch(() => {
+        setTasks(originalTasks);
+        alert('Server sync failed. Task moved back.');
+      });
+  };
 
   async function handleAddTask(title: string, description: string) {
     const response = await fetch(`${API_URL}/tasks`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ title, description })
+      body: JSON.stringify({ title, description }),
     });
 
     const data = await response.json();
@@ -97,31 +102,41 @@ function App() {
 
   const query = searchQuery.toLowerCase();
 
-  const filteredTasks = tasks.filter((t) =>
+  const filteredTasks = tasks.filter(t =>
     t.title.toLowerCase().includes(query) ||
     t.description.toLowerCase().includes(query)
   );
 
   return (
-    <div className="min-h-screen bg-slate-950 p-8 text-white">
+    <div className="min-h-screen overflow-hidden bg-[#070b14] text-white">
+
       <DragDropContext onDragEnd={onDragEnd}>
-        <div className="max-w-7xl mx-auto">
-          <header className="flex justify-between items-center mb-8">
-            <h1 className="text-4xl font-bold">TaskFlow</h1>
-            <input className="bg-slate-900 border border-slate-800 px-4 py-2 rounded-lg focus:outline-none 
-            focus:ring-2 focus:ring-blue-600" placeholder="Search tasks..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-            <button
-              onClick={() => setIsModalOpen(true)}
-              className="bg-blue-600 hover:bg-blue-500 px-4 py-2 rounded-lg font-medium transition-colors"
-            >
-              + Add Task
-            </button>
+        <div className="relative mx-auto max-w-7xl p-8">
+          <header className="mb-10 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            <h1 className="bg-gradient-to-r from-blue-400 via-cyan-300 to-violet-400 bg-clip-text text-4xl font-extrabold tracking-tight text-transparent md:text-5xl">
+              TaskFlow
+            </h1>
+
+            <div className="flex w-full flex-col gap-3 md:w-auto md:flex-row">
+              <div className="relative">
+                <input
+                  className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-slate-400 outline-none backdrop-blur-xl transition focus:border-blue-400/40 focus:ring-4 focus:ring-blue-500/10 md:w-[360px]"
+                  placeholder="Search tasks..."
+                  value={searchQuery}
+                  onChange={e => setSearchQuery(e.target.value)}
+                />
+              </div>
+
+              <button
+                onClick={() => setIsModalOpen(true)}
+                className="rounded-2xl border border-blue-400/20 bg-gradient-to-r from-blue-500 via-cyan-400 to-violet-500 px-5 py-3 font-semibold text-slate-950 shadow-[0_0_30px_rgba(59,130,246,0.25)] transition hover:scale-[1.02] hover:shadow-[0_0_40px_rgba(99,102,241,0.35)]"
+              >
+                + Add Task
+              </button>
+            </div>
           </header>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
             <Column
               title="To Do"
               status="TO_DO"
@@ -146,6 +161,7 @@ function App() {
           </div>
         </div>
       </DragDropContext>
+
       <TaskModal
         isOpen={isModalOpen}
         onClose={() => {
