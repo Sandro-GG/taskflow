@@ -1,9 +1,8 @@
-import TaskCard from './components/TaskCard';
 import type { Task } from './types';
 import Column from './components/Column';
 import { useEffect, useState } from 'react';
 import TaskModal from './components/TaskModal';
-import { DragDropContext, Droppable, type DropResult } from '@hello-pangea/dnd';
+import { DragDropContext, type DropResult } from '@hello-pangea/dnd';
 
 const API_URL = import.meta.env.VITE_API_URL as string;
 
@@ -39,7 +38,7 @@ function App() {
   }
 
   async function deleteTask(id: string) {
-    const response = await fetch(`${API_URL}/tasks/${id}`, {
+    await fetch(`${API_URL}/tasks/${id}`, {
       method: 'DELETE',
     })
     setTasks(tasks.filter(t => t.id !== id))
