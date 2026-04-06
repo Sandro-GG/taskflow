@@ -30,3 +30,8 @@ dist-ssr
 # Prisma
 **/prisma/migrations
 server/src/generated/
+
+# Backend Specifics
+server/node_modules
+server/.env
+server/dist
