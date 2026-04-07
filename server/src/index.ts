@@ -12,7 +12,15 @@ app.use(express.json());
 
 
 app.get('/tasks', async (req, res) => {
-    res.json(await client.task.findMany({ orderBy: { createdAt: 'asc' } }));
+  try {
+    const tasks = await client.task.findMany({
+      orderBy: { createdAt: 'asc' },
+    });
+    res.json(tasks);
+  } catch (error) {
+    console.error('GET /tasks error:', error);
+    res.status(500).json({ error: 'Failed to fetch tasks' });
+  }
 });
 
 
