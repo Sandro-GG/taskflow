@@ -28,7 +28,7 @@ dist-ssr
 *.local
 
 # Prisma
-**/prisma/migrations
+!server/prisma/migrations
 server/src/generated/
 
 # Backend Specifics
